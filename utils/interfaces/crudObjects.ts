@@ -27,6 +27,11 @@ export interface IProductSearchParams {
   pageNumber: number;
   pageSize: number;
 }
+export interface IServiceOrderSearchParams {
+  search?: string;
+  pageNumber: number;
+  pageSize: number;
+}
 export interface IProductSearchResponse {
   id: number;
   description: string;
@@ -34,6 +39,11 @@ export interface IProductSearchResponse {
   stockQuantity: number;
   price: number;
   selectedBtn?: boolean;
+}
+export interface IServiceOrderSearchResponse {
+  id: number;
+  description: string;
+  price: number;
 }
 export interface IPersonSearchParams {
   searchType: EPersonSearchType;
@@ -168,6 +178,6 @@ export interface ISaleById {
 export interface IServiceOrder {
   id?: number;
   description: string;
-  status: boolean;
+  status?: boolean;
   price: number;
 }

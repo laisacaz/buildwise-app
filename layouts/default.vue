@@ -158,7 +158,7 @@ export default {
             {
               icon: "mdi-package-variant",
               title: "Serviços",
-              to: "/service",
+              to: "/service-order",
             },
             {
               icon: "mdi-account-hard-hat-outline",

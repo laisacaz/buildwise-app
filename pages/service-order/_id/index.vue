@@ -30,7 +30,7 @@
             dense
             class="required"
             type="number"
-            label="Preço"
+            label="Valor"
             outlined
           >
           </v-currency-field>
@@ -77,12 +77,12 @@ export default Vue.extend({
       }
     },
     leave() {
-      this.$router.push("/service");
+      this.$router.push("/service-order");
     },
     async getData(serviceId: number) {
       this.isEditing = true;
       await this.$axios
-        .get<IServiceOrder>("/service/" + serviceId, {
+        .get<IServiceOrder>("/service-order/" + serviceId, {
           headers: {
             "content-type": "application/json",
             accept: "application/json",
@@ -100,7 +100,7 @@ export default Vue.extend({
         this.edit(parseInt(this.$route.params.id));
       } else {
         await this.$axios
-          .post<number>("/service", this.fields)
+          .post<number>("/service-order", this.fields)
           .then(() => {
             this.$globalFunctions.successAlert(
               "Serviço salvo com sucesso",
@@ -115,7 +115,7 @@ export default Vue.extend({
     },
     async edit(id: number) {
       await this.$axios
-        .put("/service/" + id, this.fields)
+        .put("/service-order/" + id, this.fields)
         .then(() => {
           this.$globalFunctions.successAlert("Serviço salvo com sucesso", 5000);
           this.leave();

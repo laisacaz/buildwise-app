@@ -14,24 +14,13 @@
 
     <v-card class="mt-6 mb-6" outlined>
       <v-row class="ml-2 mt-2">
-        <v-col cols="auto">
-          <v-select
-            style="max-width: 200px"
-            v-model="filters.searchType"
-            label="Pesquisar por"
-            :items="searchTypeItems"
-            outlined
-            dense
-            hide-details
-          ></v-select>
-        </v-col>
         <v-col cols="6">
           <v-text-field
             v-model="filters.search"
             clearable
             dense
             :maxlength="50"
-            placeholder="Digite aqui"
+            placeholder="Pesquisar pela descrição"
             outlined
           >
           </v-text-field>
@@ -100,10 +89,9 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { EProductSearchType } from "~/utils/enumerators/enum";
 import {
-  IProductSearchParams,
-  IProductSearchResponse,
+  IServiceOrderSearchParams,
+  IServiceOrderSearchResponse,
   defaultSearchResponse,
 } from "~/utils/interfaces/crudObjects";
 
@@ -113,39 +101,17 @@ export default Vue.extend({
       isRegistering: false,
       isDeleting: false,
       itemIdToDelete: 0,
-      EProductSearchType,
       isLoading: false,
-      searchTypeItems: [
-        {
-          text: "Descrição",
-          value: EProductSearchType.Description,
-        },
-        {
-          text: "Referência",
-          value: EProductSearchType.Reference,
-        },
-      ],
       headers: [
-        {
-          text: "Referência",
-          value: "reference",
-          width: 180,
-        },
         {
           text: "Descrição",
           value: "description",
-          width: "45%",
+          width: "60%",
         },
         {
-          text: "Quantidade",
-          value: "stockQuantity",
-          width: 145,
-          align: "center",
-        },
-        {
-          text: "Preço",
+          text: "Valor",
           value: "price",
-          width: 100,
+          width: 200,
           align: "end",
         },
         {
@@ -165,11 +131,10 @@ export default Vue.extend({
       ],
       filters: {
         search: "",
-        searchType: EProductSearchType.Description,
         pageNumber: 1,
         pageSize: 10,
-      } as IProductSearchParams,
-      fields: {} as defaultSearchResponse<IProductSearchResponse>,
+      } as IServiceOrderSearchParams,
+      fields: {} as defaultSearchResponse<IServiceOrderSearchResponse>,
     };
   },
   created() {
@@ -179,18 +144,20 @@ export default Vue.extend({
     async searchService() {
       this.isLoading = true;
       await this.$axios
-        .get<defaultSearchResponse<IProductSearchResponse>>("/service/search", {
-          params: {
-            search: this.filters.search,
-            searchType: this.filters.searchType,
-            pageNumber: this.filters.pageNumber,
-            pageSize: this.filters.pageSize,
-          },
-          headers: {
-            "content-type": "application/json",
-            accept: "application/json",
-          },
-        })
+        .get<defaultSearchResponse<IServiceOrderSearchResponse>>(
+          "/service-order/search",
+          {
+            params: {
+              search: this.filters.search,
+              pageNumber: this.filters.pageNumber,
+              pageSize: this.filters.pageSize,
+            },
+            headers: {
+              "content-type": "application/json",
+              accept: "application/json",
+            },
+          }
+        )
         .then((response) => {
           this.fields = response.data;
           this.isLoading = false;
@@ -209,7 +176,7 @@ export default Vue.extend({
     },
     async deleteService() {
       await this.$axios
-        .put("/service/delete/" + this.itemIdToDelete, {
+        .put("/service-order/delete/" + this.itemIdToDelete, {
           headers: { "content-type": "application/json" },
         })
         .then(() => {
@@ -220,7 +187,7 @@ export default Vue.extend({
         });
     },
     newRegister() {
-      this.$router.push("/service/_id");
+      this.$router.push("/service-order/_id");
     },
   },
 });

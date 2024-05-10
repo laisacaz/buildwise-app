@@ -57,10 +57,10 @@
               <div class="text-overline mb-1"></div>
               <div class="mt-8 ml-4 text-h6 mb-1">
                 Caixa
-                <v-icon>mdi-cart</v-icon>
+                <v-icon>mdi-network-pos</v-icon>
               </div>
               <div class="ml-4 mr-5 mb-2 text-h7">
-                Cadastre os serviços realizados pela construtora!
+                Mantenha o controle do caixa em dia!
               </div>
             </div>
           </v-card-item>
@@ -103,7 +103,7 @@
               <div class="text-overline mb-1"></div>
               <div class="mt-8 ml-4 text-h6 mb-1">
                 Serviços
-                <v-icon>mdi-cart</v-icon>
+                <v-icon>mdi-wrench</v-icon>
               </div>
               <div class="ml-4 mr-5 mb-2 text-h7">
                 Cadastre os serviços realizados pela construtora!
@@ -166,7 +166,7 @@ export default Vue.extend({
       this.$router.push("/person");
     },
     service() {
-      this.$router.push("/service");
+      this.$router.push("/service-order");
     },
   },
 });
