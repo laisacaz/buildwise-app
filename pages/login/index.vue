@@ -43,6 +43,16 @@
             </v-btn>
         </v-col>
     </v-row>
+       <v-row no-gutters  class="mr-4 ml-4 mb-5">
+        <v-col cols="12">
+            <v-btn class="fill-space"
+            outlined
+            color="primary"
+            @click="login">
+                Cadastrar-se
+            </v-btn>
+        </v-col>
+    </v-row>
  </v-card>
 </div>
 </template>

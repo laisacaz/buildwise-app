@@ -110,7 +110,10 @@
       <v-toolbar-title>{{ title }}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-col cols="auto">
-                    <v-chip>                    {{'Laísa'}}</v-chip></v-col>
+                      <v-chip>
+                      {{'Laísa'}}
+                      </v-chip>
+                    </v-col>
                     <v-col cols="auto"><v-avatar size="70" rounded>
              <v-icon size="30">mdi-account </v-icon>
               </v-avatar>
