@@ -147,7 +147,7 @@ created() {
   },  
 methods: {
   leave(){
-      this.$router.push('/')
+      this.$router.push('/menu')
   },
   async generatePdf(){
 

@@ -1,173 +1,97 @@
 <template>
-  <v-container>
-    <v-row class="mb-6" justify="center">
-      <h1>Seja bem-vindo ao BuildWise!</h1>
-    </v-row>
-    <v-divider></v-divider>
-
-    <v-row align="center" class="mt-8" justify="center">
-      <v-col cols="auto">
-        <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1"></div>
-              <div class="mt-8 ml-4 text-h6 mb-1">
-                Produtos
-                <v-icon>mdi-package-variant</v-icon>
-              </div>
-              <div class="ml-4 mr-5 mb-2 text-h7">
-                Mantenha o seu estoque sempre atualizado!
-              </div>
-            </div>
-          </v-card-item>
-
-          <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="product">
-              Acessar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col cols="auto">
-        <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1"></div>
-              <div class="mt-8 ml-4 text-h6 mb-1">
-                Obras
-                <v-icon>mdi-account-hard-hat-outline</v-icon>
-              </div>
-              <div class="ml-4 mr-5 mb-2 text-h7">
-                Registre as obras para manter o controle!
-              </div>
-            </div>
-          </v-card-item>
-
-          <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="construction">
-              Acessar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col cols="auto">
-        <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1"></div>
-              <div class="mt-8 ml-4 text-h6 mb-1">
-                Caixa
-                <v-icon>mdi-network-pos</v-icon>
-              </div>
-              <div class="ml-4 mr-5 mb-2 text-h7">
-                Mantenha o controle do caixa em dia!
-              </div>
-            </div>
-          </v-card-item>
-
-          <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="sale">
-              Acessar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div>
     <v-row justify="center">
-      <v-col cols="auto">
-        <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1"></div>
-              <div class="mt-8 ml-4 text-h6 mb-1">
-                Pessoas
-                <v-icon>mdi-account-group</v-icon>
-              </div>
-              <div class="ml-4 mr-5 mb-2 text-h7">
-                Cadastre os seus clientes e vendedores!
-              </div>
-            </div>
-          </v-card-item>
-
-          <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="person">
-              Acessar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col cols="auto">
-        <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1"></div>
-              <div class="mt-8 ml-4 text-h6 mb-1">
-                Serviços
-                <v-icon>mdi-wrench</v-icon>
-              </div>
-              <div class="ml-4 mr-5 mb-2 text-h7">
-                Cadastre os serviços realizados pela construtora!
-              </div>
-            </div>
-          </v-card-item>
-
-          <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="service">
-              Acessar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col cols="auto">
-        <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
-          <v-card-item>
-            <div>
-              <div class="text-overline mb-1"></div>
-              <div class="mt-8 ml-4 text-h6 mb-1">
-                Vendas
-                <v-icon>mdi-cart</v-icon>
-              </div>
-              <div class="ml-4 mr-5 mb-2 text-h7">
-                Cadastre as vendas dos seus produtos!
-              </div>
-            </div>
-          </v-card-item>
-
-          <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="sale">
-              Acessar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
+        <v-col cols="auto">
+          <v-img
+            :src="require('~/assets/eaa743a9-ced5-48cc-8b1b-8764b1ad3d88.jpeg')"
+            contain
+            max-height="150"
+            max-width="300"
+            width="100%"
+            height="100%"
+            style=""
+          ></v-img>
+        </v-col>
     </v-row>
-  </v-container>
+ <v-card outlined>    
+    <v-row no-gutters class="mt-5 mr-4 ml-4">
+        <v-col cols="12">
+            <v-text-field
+            v-model="email"
+            outlined
+            placeholder="Digite o email">
+
+            </v-text-field>
+        </v-col>
+    </v-row>
+    <v-row no-gutters class="mr-4 ml-4">
+        <v-col cols="12">
+            <v-text-field
+            v-model="password"
+            placeholder="Digite a senha"
+            outlined
+            >                
+            </v-text-field>
+        </v-col>
+    </v-row>
+    <v-row no-gutters  class="mr-4 ml-4 mb-5">
+        <v-col cols="12">
+            <v-btn class="fill-space"
+            color="primary"
+            @click="login">
+                Entrar
+            </v-btn>
+        </v-col>
+    </v-row>
+       <v-row no-gutters  class="mr-4 ml-4 mb-5">
+        <v-col cols="12">
+            <v-btn class="fill-space"
+            outlined
+            color="primary"
+            @click="signup">
+                Cadastrar-se
+            </v-btn>
+        </v-col>
+    </v-row>
+ </v-card>
+</div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from "vue"
 export default Vue.extend({
+  layout: "auth",
   data() {
     return {
-      variants: ["elevated", "flat", "tonal", "outlined"],
-    };
+      email: '',
+      password:''
+    }
   },
   methods: {
-    product() {
-      this.$router.push("/product");
+    signup(){
+           this.$router.push('/signup')
     },
-    sale() {
-      this.$router.push("/sale");
-    },
-    construction() {
-      this.$router.push("/construction");
-    },
-    person() {
-      this.$router.push("/person");
-    },
-    service() {
-      this.$router.push("/service-order");
-    },
-  },
-});
+    login(){
+      if(this.email === ''){
+        this.$globalFunctions.attentionAlert('Email é obrigatório')
+      }else if(this.password === ''){
+        this.$globalFunctions.attentionAlert('Senha é obrigatório')
+      }else if(this.email === '' && this.password === ''){
+        this.$globalFunctions.attentionAlert('Email e senha são obrigatórios')
+      }else{
+      this.$router.push('/menu')
+    }
+    }
+  }
+})
 </script>
+
+<style>
+.fill-space {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
