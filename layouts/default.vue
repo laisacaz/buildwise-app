@@ -152,7 +152,7 @@ export default {
         {
           icon: "mdi-apps",
           title: "Menu",
-          to: "/",
+          to: "/menu",
         },
         {
           icon: "mdi-cart",
