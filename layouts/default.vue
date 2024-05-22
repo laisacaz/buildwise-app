@@ -119,7 +119,7 @@
               </v-avatar>
              </v-col>             
              <v-col cols="auto">
-             <v-btn>Sair</v-btn>
+             <v-btn text @click="leave">Sair</v-btn>
              </v-col>            
       <!-- <v-spacer />
       <v-btn
@@ -208,5 +208,10 @@ export default {
       title: "BuildWise",
     };
   },
+  methods: {
+    leave(){
+      this.$router.push('/')
+    }
+  }
 };
 </script>
