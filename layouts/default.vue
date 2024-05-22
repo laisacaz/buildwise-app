@@ -108,6 +108,16 @@
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>{{ title }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-col cols="auto">
+                    <v-chip>                    {{'Laísa'}}</v-chip></v-col>
+                    <v-col cols="auto"><v-avatar size="70" rounded>
+             <v-icon size="30">mdi-account </v-icon>
+              </v-avatar>
+             </v-col>             
+             <v-col cols="auto">
+             <v-btn>Sair</v-btn>
+             </v-col>            
       <!-- <v-spacer />
       <v-btn
         icon
