@@ -181,3 +181,10 @@ export interface IServiceOrder {
   status?: boolean;
   price: number;
 }
+export interface IUser {
+  id?: number;
+  registeredNumber: string;
+  name: string;
+  email: string;
+  password: string;
+}
