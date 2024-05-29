@@ -82,22 +82,12 @@ export default Vue.extend({
         .post<number>("/user", this.user)
         .then(() => {
           this.$globalFunctions.successAlert("Usuário salvo com sucesso", 5000);
+          this.$router.push('/menu')
         })
         .catch((error) => {
           console.log(error);
         });
-    },
-    login() {
-      if (this.user.email === "") {
-        this.$globalFunctions.attentionAlert("Email é obrigatório");
-      } else if (this.user.password === "") {
-        this.$globalFunctions.attentionAlert("Senha é obrigatório");
-      } else if (this.user.email === "" && this.user.password === "") {
-        this.$globalFunctions.attentionAlert("Email e senha são obrigatórios");
-      } else {
-        this.$router.push("/menu");
-      }
-    },
+    },   
   },
 });
 </script>
