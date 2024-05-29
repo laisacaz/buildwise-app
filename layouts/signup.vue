@@ -15,7 +15,7 @@
           ></v-img>
         </v-col>
         <v-col cols="6" class="align-center text-wrap text-center">
-          <h1 style="margin-top: 7%; margin-left:20%">
+          <h1 style="margin-top: 7%; margin-left: 30%">
             Utilize a ferramenta adequada para a gestão da sua construtora
           </h1>
         </v-col>
