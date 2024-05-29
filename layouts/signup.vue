@@ -7,17 +7,15 @@
             :src="require('~/assets/eaa743a9-ced5-48cc-8b1b-8764b1ad3d88.jpeg')"
             contain
             max-height="150"
-            max-width="300"
+            max-width="250"
             width="100%"
             height="100%"
-            class="mb-0"
+            class="mb-0 mt-0"
             style="margin-left: 10%"
           ></v-img>
         </v-col>
-      </v-row>
-      <v-row style="margin-left: 26%; margin-bottom: 1%">
-        <v-col>
-          <h1>
+        <v-col cols="6" class="align-center text-wrap text-center">
+          <h1 style="margin-top: 7%; margin-left:20%">
             Utilize a ferramenta adequada para a gestão da sua construtora
           </h1>
         </v-col>
