@@ -66,7 +66,7 @@
           </v-card-item>
 
           <v-card-actions>
-            <v-btn color="primary" class="ml-2 mb-2" @click="sale">
+            <v-btn color="primary" class="ml-2 mb-2" @click="posCashier">
               Acessar
             </v-btn>
           </v-card-actions>
@@ -168,6 +168,9 @@ export default Vue.extend({
     service() {
       this.$router.push("/service-order");
     },
+    posCashier(){
+      this.$router.push("/pos-cashier");
+    }
   },
 });
 </script>
