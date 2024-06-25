@@ -188,3 +188,16 @@ export interface IUser {
   email: string;
   password: string;
 }
+export interface ICashierValues {
+  pix: number;
+  creditCard: number;
+  debitCard: number;
+  money: number;
+  amountAvailable: number;
+  entries: number;
+  outs: number;
+}
+export interface ICashier {
+  openingDate: string;
+  values: ICashierValues;
+}

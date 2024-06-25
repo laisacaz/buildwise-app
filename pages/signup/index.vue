@@ -82,12 +82,12 @@ export default Vue.extend({
         .post<number>("/user", this.user)
         .then(() => {
           this.$globalFunctions.successAlert("Usuário salvo com sucesso", 5000);
-          this.$router.push('/menu')
+          this.$router.push("/menu");
         })
         .catch((error) => {
           console.log(error);
         });
-    },   
+    },
   },
 });
 </script>

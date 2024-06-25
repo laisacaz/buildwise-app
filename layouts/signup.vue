@@ -14,8 +14,8 @@
             style="margin-left: 10%"
           ></v-img>
         </v-col>
-        <v-col cols="6" class="align-center text-wrap text-center">
-          <h1 style="margin-top: 7%; margin-left: 30%">
+        <v-col cols="12" md="6" class="align-center text-wrap text-center">
+          <h1 class="responsive-title">
             Utilize a ferramenta adequada para a gestão da sua construtora
           </h1>
         </v-col>
@@ -42,4 +42,36 @@ export default Vue.extend({
   },
 });
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.responsive-title {
+  font-size: 1.5rem;
+  margin-top: 5%;
+  margin-left: 6%;
+}
+
+@media (min-width: 600px) {
+  .responsive-title {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .responsive-title {
+    font-size: 2.5rem;
+    margin-top: 7%;
+    margin-left: 36%;
+  }
+}
+
+@media (min-height: 1000px) {
+  .responsive-title {
+    font-size: 2.5rem;
+    margin-top: 7%;
+    margin-left: 50%;
+  }
+}
+
+.page-background {
+  background-color: #f5f5f5;
+}
+</style>
