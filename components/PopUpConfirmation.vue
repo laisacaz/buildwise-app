@@ -35,7 +35,7 @@
             class="font-weight-bold"
             @click.native="dialogCancelClick"
           >
-            Cancelar
+            {{ cancelMessage }}
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn
@@ -64,6 +64,7 @@ export default Vue.extend({
     message: { type: String, required: false },
     color: { type: String, required: false },
     confirmMessage: { type: String, required: false, default: "Confirmar" },
+    cancelMessage: { type: String, required: false, default: "Cancelar" },
     hintMessage: { type: String, required: false, default: undefined },
   },
   computed: {
