@@ -5,6 +5,7 @@
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
+      style="background-color: #dee9f3"
       app
     >
       <v-list class="py-0 navigation-list">
@@ -105,22 +106,28 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-col cols="auto">
-                      <v-chip>
-                      {{'Laísa'}}
-                      </v-chip>
-                    </v-col>
-                    <v-col cols="auto"><v-avatar size="70" rounded>
-             <v-icon size="30">mdi-account </v-icon>
-              </v-avatar>
-             </v-col>             
-             <v-col cols="auto">
-             <v-btn text @click="leave">Sair</v-btn>
-             </v-col>            
+    <v-app-bar
+      :clipped-left="clipped"
+      fixed
+      app
+      style="background-color: #1b5289"
+    >
+      <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer" />
+      <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-col cols="auto">
+        <v-chip>
+          {{ "Laísa" }}
+        </v-chip>
+      </v-col>
+      <v-col cols="auto"
+        ><v-avatar size="70" rounded>
+          <v-icon size="30" color="white">mdi-account </v-icon>
+        </v-avatar>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn text @click="leave" class="white--text">Sair</v-btn>
+      </v-col>
       <!-- <v-spacer />
       <v-btn
         icon
@@ -209,9 +216,9 @@ export default {
     };
   },
   methods: {
-    leave(){
-      this.$router.push('/')
-    }
-  }
+    leave() {
+      this.$router.push("/");
+    },
+  },
 };
 </script>
