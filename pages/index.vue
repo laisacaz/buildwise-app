@@ -16,14 +16,18 @@
     <v-card outlined>
       <v-row no-gutters class="mt-5 mr-4 ml-4">
         <v-col cols="12">
-          <v-text-field v-model="email" outlined placeholder="Digite o email">
+          <v-text-field
+            v-model="signinObject.email"
+            outlined
+            placeholder="Digite o email"
+          >
           </v-text-field>
         </v-col>
       </v-row>
       <v-row no-gutters class="mr-4 ml-4">
         <v-col cols="12">
           <v-text-field
-            v-model="password"
+            v-model="signinObject.password"
             placeholder="Digite a senha"
             outlined
             type="password"
@@ -51,12 +55,15 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { IUser } from "~/utils/interfaces/crudObjects";
 export default Vue.extend({
   layout: "auth",
   data() {
     return {
-      email: "",
-      password: "",
+      signinObject: {
+        email: "",
+        password: "",
+      },
     };
   },
   methods: {
@@ -64,15 +71,33 @@ export default Vue.extend({
       this.$router.push("/signup");
     },
     login() {
-      if (this.email === "") {
+      if (this.signinObject.email === "") {
         this.$globalFunctions.attentionAlert("Email é obrigatório");
-      } else if (this.password === "") {
+      } else if (this.signinObject.password === "") {
         this.$globalFunctions.attentionAlert("Senha é obrigatório");
-      } else if (this.email === "" && this.password === "") {
+      } else if (
+        this.signinObject.email === "" &&
+        this.signinObject.password === ""
+      ) {
         this.$globalFunctions.attentionAlert("Email e senha são obrigatórios");
       } else {
-        this.$router.push("/menu");
+        this.signin();
       }
+    },
+    async signin() {
+      await this.$axios
+        .post<IUser>("/user/signin", this.signinObject, {
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+        })
+        .then((response) => {
+          this.$router.push("/menu");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 });

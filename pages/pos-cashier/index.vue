@@ -36,6 +36,70 @@
         </v-card>
       </v-dialog>
     </v-form>
+    <v-form v-if="showPopupEntry" style="max-width: 280px">
+      <v-dialog v-model="showPopupEntry" persistent max-width="280px">
+        <v-card class="no-scroll" style="max-width: 280px">
+          <v-row no-gutters>
+            <v-col cols="auto">
+              <v-card-title> Insira o valor de entrada </v-card-title>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="11">
+              <v-currency-field
+                v-model="objectEntryAndOut.amount"
+                outlined
+                type="number"
+                class="ml-4"
+              ></v-currency-field>
+            </v-col>
+          </v-row>
+          <v-row class="mt-4" no-gutters>
+            <v-col cols="auto">
+              <v-btn class="ml-4 mb-4" text color="black" @click="leave">
+                <v-icon class="mr-2">mdi-arrow-right-bottom</v-icon>
+                Voltar
+              </v-btn>
+            </v-col>
+            <v-col cols="auto" class="mr-2" @click="saveEntry">
+              <v-btn class="ml-5 mb-4" color="primary"> Salvar </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-dialog>
+    </v-form>
+    <v-form v-if="showPopupOut" style="max-width: 280px">
+      <v-dialog v-model="showPopupOut" persistent max-width="280px">
+        <v-card class="no-scroll" style="max-width: 280px">
+          <v-row no-gutters>
+            <v-col cols="auto">
+              <v-card-title> Insira o valor de saída </v-card-title>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="11">
+              <v-currency-field
+                v-model="objectEntryAndOut.amount"
+                outlined
+                type="number"
+                class="ml-4"
+              ></v-currency-field>
+            </v-col>
+          </v-row>
+          <v-row class="mt-4" no-gutters>
+            <v-col cols="auto">
+              <v-btn class="ml-4 mb-4" text color="black" @click="leave">
+                <v-icon class="mr-2">mdi-arrow-right-bottom</v-icon>
+                Voltar
+              </v-btn>
+            </v-col>
+            <v-col cols="auto" class="mr-2" @click="saveOut">
+              <v-btn class="ml-5 mb-4" color="primary"> Salvar </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-dialog>
+    </v-form>
     <PDF-Viewer
       v-model="showPdf"
       title="PDF"
@@ -74,33 +138,31 @@
 
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Cartão de crédito = R${{
-                currencyMask(cashier.values.creditCard ?? 0)
-              }}
+              Cartão de crédito =
+              {{ currencyMask(cashier.values.creditCard ?? 0) }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Cartão de débito = R${{
-                currencyMask(cashier.values.debitCard ?? 0)
-              }}
+              Cartão de débito =
+              {{ currencyMask(cashier.values.debitCard ?? 0) }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Pix = R${{ currencyMask(cashier.values.pix ?? 0) }}
+              Pix = {{ currencyMask(cashier.values.pix ?? 0) }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Dinheiro = R${{ currencyMask(cashier.values.money ?? 0) }}
+              Dinheiro = {{ currencyMask(cashier.values.money ?? 0) }}
             </v-col>
           </v-row>
           <v-divider class="mb-2 mt-2"></v-divider>
           <v-row justify="end" class="mr-4">
             <v-col cols="auto">
               <h2>
-                Saldo em caixa = R${{
+                Saldo em caixa ={{
                   currencyMask(cashier.values.amountAvailable ?? 0)
                 }}
               </h2>
@@ -108,10 +170,25 @@
           </v-row>
           <v-row justify="end">
             <v-col cols="auto">
-              <v-btn large color="green">Entrada</v-btn>
+              <v-btn
+                large
+                rounded
+                outlined
+                color="green"
+                @click="showPopupEntry = true"
+                >Entrada</v-btn
+              >
             </v-col>
-            <v-col cols="auto">
-              <v-btn large color="red">Saída</v-btn>
+            <v-col cols="auto" class="mr-4">
+              <v-btn
+                large
+                rounded
+                outlined
+                color="red"
+                style="width: 114px"
+                @click="showPopupOut = true"
+                >Saída</v-btn
+              >
             </v-col>
           </v-row>
         </v-card>
@@ -128,9 +205,15 @@ export default Vue.extend({
     return {
       showOpenCashierDialog: false,
       showOpenCashierConfirmDialog: false,
+      showPopupEntry: false,
+      showPopupOut: false,
       showPdf: false,
       thePDFFileBlobRoute: undefined as string | undefined,
       isCashierOpened: false,
+      objectEntryAndOut: {
+        id: 0,
+        amount: 0,
+      },
       cashierId: 0,
       currencyMask,
       initialValue: 0,
@@ -238,6 +321,38 @@ export default Vue.extend({
         })
         .then((res) => {
           this.thePDFFileBlobRoute = window.URL.createObjectURL(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async saveEntry() {
+      await this.$axios
+        .put("/cashier/entry/" + this.cashierId, this.objectEntryAndOut, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.$globalFunctions.successAlert("Entrada salva com sucesso", 5000);
+          this.showPopupEntry = false;
+          this.getValues();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async saveOut() {
+      await this.$axios
+        .put("/cashier/out/" + this.cashierId, this.objectEntryAndOut, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.$globalFunctions.successAlert("Saída salva com sucesso", 5000);
+          this.showPopupOut = false;
+          this.getValues();
         })
         .catch((error) => {
           console.log(error);

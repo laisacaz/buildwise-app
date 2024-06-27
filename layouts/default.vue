@@ -208,6 +208,11 @@ export default {
             },
             {
               icon: "mdi-file-chart",
+              title: "Ranking serviços",
+              to: "/report-service-ranking",
+            },
+            {
+              icon: "mdi-file-chart",
               title: "Vendas por período",
               to: "/report-sale-period",
             },
