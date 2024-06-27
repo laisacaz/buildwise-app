@@ -44,6 +44,7 @@ export interface IServiceOrderSearchResponse {
   id: number;
   description: string;
   price: number;
+  selectedBtn?: boolean;
 }
 export interface IPersonSearchParams {
   searchType: EPersonSearchType;
@@ -104,10 +105,20 @@ export interface ISimpleProduct {
   productId: number;
   stockQuantity: number;
 }
+export interface ISimpleServiceOrder {
+  serviceId: number;
+  stockQuantity: number;
+}
 export interface IProductSale {
   productId: number;
   stockQuantitySale: number;
   reference: string;
+  description: string;
+  price: number;
+}
+export interface IServiceSale {
+  serviceId: number;
+  stockQuantitySale: number;
   description: string;
   price: number;
 }
@@ -147,6 +158,7 @@ export interface ISale {
   sellerId: number;
   constructionId?: number;
   products: ISimpleProduct[];
+  services: ISimpleServiceOrder[];
   receivementMethod?: ESaleReceivementMethod;
   discount?: number;
   increase?: number;
@@ -173,6 +185,7 @@ export interface ISaleById {
   client: ISimplePerson;
   seller: ISimplePerson;
   products: IProductSale[];
+  services: IServiceSale[];
   construction?: IConstruction;
 }
 export interface IServiceOrder {

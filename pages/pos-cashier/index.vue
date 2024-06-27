@@ -74,29 +74,35 @@
 
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Cartão de crédito = R${{ cashier.values.creditCard ?? 0 }},00
+              Cartão de crédito = R${{
+                currencyMask(cashier.values.creditCard ?? 0)
+              }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Cartão de débito = R${{ cashier.values.debitCard ?? 0 }},00
+              Cartão de débito = R${{
+                currencyMask(cashier.values.debitCard ?? 0)
+              }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Pix = R${{ cashier.values.pix ?? 0 }},00
+              Pix = R${{ currencyMask(cashier.values.pix ?? 0) }}
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="auto" class="ml-4">
-              Dinheiro = R${{ cashier.values.money ?? 0 }},00
+              Dinheiro = R${{ currencyMask(cashier.values.money ?? 0) }}
             </v-col>
           </v-row>
           <v-divider class="mb-2 mt-2"></v-divider>
           <v-row justify="end" class="mr-4">
             <v-col cols="auto">
               <h2>
-                Saldo em caixa = R${{ cashier.values.amountAvailable ?? 0 }},00
+                Saldo em caixa = R${{
+                  currencyMask(cashier.values.amountAvailable ?? 0)
+                }}
               </h2>
             </v-col>
           </v-row>
@@ -115,6 +121,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { currencyMask } from "~/utils/consts/const";
 import { ICashier, ICashierValues } from "~/utils/interfaces/crudObjects";
 export default Vue.extend({
   data() {
@@ -125,6 +132,7 @@ export default Vue.extend({
       thePDFFileBlobRoute: undefined as string | undefined,
       isCashierOpened: false,
       cashierId: 0,
+      currencyMask,
       initialValue: 0,
       cashier: {
         values: {

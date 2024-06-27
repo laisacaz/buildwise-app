@@ -162,7 +162,12 @@ export default {
           to: "/menu",
         },
         {
-          icon: "mdi-cart",
+          icon: "mdi-cash-register",
+          title: "Caixa",
+          to: "/pos-cashier",
+        },
+        {
+          icon: "mdi-plus-box-multiple",
           title: "Cadastros",
           children: [
             {
@@ -176,7 +181,7 @@ export default {
               to: "/product",
             },
             {
-              icon: "mdi-package-variant",
+              icon: "mdi-account-wrench",
               title: "Serviços",
               to: "/service-order",
             },

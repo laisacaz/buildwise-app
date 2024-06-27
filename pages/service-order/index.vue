@@ -80,6 +80,9 @@
             <span>{{ "Deletar" }}</span>
           </v-tooltip>
         </template>
+        <template #[`item.price`]="{ item }">{{
+          currencyMask(item.price)
+        }}</template>
         <template v-slot:no-data>
           <v-alert :value="true"> Nenhum serviço encontrado </v-alert>
         </template>
@@ -89,6 +92,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { currencyMask } from "~/utils/consts/const";
 import {
   IServiceOrderSearchParams,
   IServiceOrderSearchResponse,
@@ -101,6 +105,7 @@ export default Vue.extend({
       isRegistering: false,
       isDeleting: false,
       itemIdToDelete: 0,
+      currencyMask,
       isLoading: false,
       headers: [
         {
