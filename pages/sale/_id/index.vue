@@ -64,7 +64,7 @@
           </v-row>
 
           <v-row class="ml-2">
-            <v-col cols="auto">
+            <v-col cols="5">
               <v-select
                 v-model="fields.receivementMethod"
                 style="max-width: 300px"
@@ -79,13 +79,13 @@
             <v-col cols="auto">
               <h4 class="mt-2">Valor recebido</h4>
             </v-col>
-            <v-col cols="auto">
+            <v-col cols="4">
               <v-currency-field
                 v-model="fields.paidAmount"
                 outlined
                 disabled
                 dense
-                style="max-width: 80px"
+                style="max-width: 150px"
               ></v-currency-field>
             </v-col>
             <v-col cols="auto" v-if="moneyToReturn">
@@ -188,7 +188,7 @@
           </v-row>
 
           <v-row class="ml-2">
-            <v-col cols="auto">
+            <v-col cols="5">
               <v-select
                 v-model="fields.receivementMethod"
                 style="max-width: 300px"
@@ -203,12 +203,12 @@
             <v-col cols="auto">
               <h4 class="mt-2">Valor recebido</h4>
             </v-col>
-            <v-col cols="auto">
+            <v-col cols="4">
               <v-currency-field
                 v-model="fields.paidAmount"
                 outlined
                 dense
-                style="max-width: 80px"
+                style="max-width: 150px"
                 @change="checkIfHasMoneyToReturn"
               ></v-currency-field>
             </v-col>
@@ -435,7 +435,9 @@
                 }}</span>
               </v-tooltip>
             </template>
-
+            <template #[`item.price`]="{ item }">
+              {{ currencyMask(item.price) }}
+            </template>
             <template #[`item.stockQuantitySale`]="{ item }">
               <v-col cols="auto" v-show="item.selectedBtn">
                 <v-currency-field
@@ -472,7 +474,7 @@
     </v-form>
     <!-- popup de pesquisa de serviços -->
     <v-form v-if="showPopupSearchServices">
-      <v-dialog v-model="showPopupSearchServices" persistent max-width="600px">
+      <v-dialog v-model="showPopupSearchServices" persistent max-width="800px">
         <v-card class="no-scroll">
           <v-card-title> Pesquisar serviços </v-card-title>
           <v-row class="ml-2">
@@ -702,7 +704,7 @@
       </v-row>
 
       <v-divider></v-divider>
-
+      <!-- produtos inseridos na venda -->
       <v-data-table
         :items="productsToBeInsertedInRegister"
         :headers="headersProductsToInsert"
@@ -724,15 +726,15 @@
             <span>{{ "Deletar" }}</span>
           </v-tooltip>
         </template>
+        <template #[`item.price`]="{ item }">
+          {{ currencyMask(item.price) }}
+        </template>
+        <template #[`item.stockQuantitySale`]="{ item }">
+          {{ twoDecimalsMask(item.stockQuantitySale) }}
+        </template>
         <template v-slot:no-data> Nenhum produto adicionado </template>
       </v-data-table>
       <v-divider></v-divider>
-
-      <!-- <v-row justify="end">
-                        <v-col cols="auto">
-                            <span>Total: {{ fields.total }}</span>
-                        </v-col>
-                    </v-row> -->
     </v-card>
     <v-card elevated class="mb-6">
       <v-row class="ml-2 mt-2">
@@ -751,7 +753,7 @@
       </v-row>
 
       <v-divider></v-divider>
-
+      <!-- serviços inseridos na venda -->
       <v-data-table
         :items="servicesToBeInsertedInRegister"
         :headers="headersServicesToInsert"
@@ -773,6 +775,12 @@
             <span>{{ "Deletar" }}</span>
           </v-tooltip>
         </template>
+        <template #[`item.price`]="{ item }">
+          {{ currencyMask(item.price) }}
+        </template>
+        <template #[`item.stockQuantitySale`]="{ item }">
+          {{ twoDecimalsMask(item.stockQuantitySale) }}
+        </template>
         <template v-slot:no-data> Nenhum serviço adicionado </template>
       </v-data-table>
       <v-divider></v-divider>
@@ -781,7 +789,7 @@
         <v-col cols="auto">
           <v-btn color="green white--text" @click="consultingFinished">
             <v-icon class="mr-2">mdi-magnify</v-icon>
-            Consultar recebimento
+            Recebimento
           </v-btn>
         </v-col>
       </v-row>
@@ -815,7 +823,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { currencyMask } from "~/utils/consts/const";
+import { currencyMask, twoDecimalsMask } from "~/utils/consts/const";
 import {
   EConstructionSearchType,
   EProductSearchType,
@@ -855,6 +863,7 @@ export default Vue.extend({
       showPopupSearchProducts: false,
       showPopupSearchServices: false,
       currencyMask,
+      twoDecimalsMask,
       isBtnSelected: false,
       hasConstruction: false,
       isEditing: false,
@@ -944,12 +953,13 @@ export default Vue.extend({
         {
           text: "Descrição",
           value: "description",
-          width: "50%",
+          width: "70%",
         },
         {
           text: "Valor",
           value: "price",
-          width: "50%",
+          width: 145,
+          align: "end",
         },
         {
           text: "Quantidade",

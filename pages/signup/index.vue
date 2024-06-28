@@ -19,8 +19,10 @@
             v-model="user.registeredNumber"
             label="CNPJ"
             class="required"
-            placeholder="00.000.000-00"
+            maxlength="18"
+            placeholder="00.000.000/0000-00"
             outlined
+            @input="formatCNPJ"
           >
           </v-text-field>
         </v-col>
@@ -63,6 +65,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { CNPJMask } from "~/utils/consts/const";
 import { IUser } from "~/utils/interfaces/crudObjects";
 export default Vue.extend({
   layout: "signup",
@@ -77,6 +80,16 @@ export default Vue.extend({
     };
   },
   methods: {
+    formatCNPJ() {
+      let value = this.user.registeredNumber.replace(/\D/g, "");
+      if (value.length <= 14) {
+        value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+        value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+        value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+        value = value.replace(/(\d{4})(\d)/, "$1-$2");
+      }
+      this.user.registeredNumber = value;
+    },
     async signup() {
       await this.$axios
         .post<number>("/user", this.user)

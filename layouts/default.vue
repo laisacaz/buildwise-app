@@ -115,12 +115,12 @@
       <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer" />
       <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-col cols="auto">
+      <v-col cols="auto" class="mr-n2">
         <v-chip>
           {{ "Laísa" }}
         </v-chip>
       </v-col>
-      <v-col cols="auto"
+      <v-col cols="auto" class="mr-n6"
         ><v-avatar size="70" rounded>
           <v-icon size="30" color="white">mdi-account </v-icon>
         </v-avatar>

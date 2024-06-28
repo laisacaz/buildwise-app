@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-row class="mt-4">
-      <h1 class="ml-4">
+      <h2 class="ml-4">
         {{ isEditing ? "Edição de serviço" : "Cadastro de serviço" }}
-      </h1>
+      </h2>
     </v-row>
     <v-card style="max-width: 800px" class="mt-6 mb-6" outlined>
       <v-row class="ml-2 mt-2 mr-0">

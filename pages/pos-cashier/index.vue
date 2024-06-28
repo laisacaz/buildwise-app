@@ -56,7 +56,12 @@
           </v-row>
           <v-row class="mt-4" no-gutters>
             <v-col cols="auto">
-              <v-btn class="ml-4 mb-4" text color="black" @click="leave">
+              <v-btn
+                class="ml-4 mb-4"
+                text
+                color="black"
+                @click="showPopupEntry = false"
+              >
                 <v-icon class="mr-2">mdi-arrow-right-bottom</v-icon>
                 Voltar
               </v-btn>
@@ -88,7 +93,12 @@
           </v-row>
           <v-row class="mt-4" no-gutters>
             <v-col cols="auto">
-              <v-btn class="ml-4 mb-4" text color="black" @click="leave">
+              <v-btn
+                class="ml-4 mb-4"
+                text
+                color="black"
+                @click="showPopupOut = false"
+              >
                 <v-icon class="mr-2">mdi-arrow-right-bottom</v-icon>
                 Voltar
               </v-btn>
@@ -158,7 +168,19 @@
               Dinheiro = {{ currencyMask(cashier.values.money ?? 0) }}
             </v-col>
           </v-row>
-          <v-divider class="mb-2 mt-2"></v-divider>
+          <v-divider class="mb-2 mt-4"></v-divider>
+          <v-card-title>Movimentações</v-card-title>
+          <v-row>
+            <v-col cols="auto" class="ml-4">
+              Entradas = {{ currencyMask(cashier.values.entries ?? 0) }}
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="auto" class="ml-4">
+              Saídas = {{ currencyMask(cashier.values.outs ?? 0) }}
+            </v-col>
+          </v-row>
+          <v-divider class="mb-2 mt-4"></v-divider>
           <v-row justify="end" class="mr-4">
             <v-col cols="auto">
               <h2>
@@ -337,6 +359,10 @@ export default Vue.extend({
           this.$globalFunctions.successAlert("Entrada salva com sucesso", 5000);
           this.showPopupEntry = false;
           this.getValues();
+          this.objectEntryAndOut = {
+            amount: 0,
+            id: 0,
+          };
         })
         .catch((error) => {
           console.log(error);
@@ -352,6 +378,10 @@ export default Vue.extend({
         .then((res) => {
           this.$globalFunctions.successAlert("Saída salva com sucesso", 5000);
           this.showPopupOut = false;
+          this.objectEntryAndOut = {
+            amount: 0,
+            id: 0,
+          };
           this.getValues();
         })
         .catch((error) => {

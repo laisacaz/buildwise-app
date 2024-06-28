@@ -1,10 +1,5 @@
 <template>
   <v-container>
-    <v-row class="mb-6" justify="center">
-      <h1>Seja bem-vindo ao BuildWise!</h1>
-    </v-row>
-    <v-divider></v-divider>
-
     <v-row align="center" class="mt-8" justify="center">
       <v-col cols="auto">
         <v-card class="mx-auto" style="width: 280px" outlined elevation="3">
@@ -168,9 +163,9 @@ export default Vue.extend({
     service() {
       this.$router.push("/service-order");
     },
-    posCashier(){
+    posCashier() {
       this.$router.push("/pos-cashier");
-    }
+    },
   },
 });
 </script>
