@@ -784,7 +784,9 @@
         <template v-slot:no-data> Nenhum serviço adicionado </template>
       </v-data-table>
       <v-divider></v-divider>
-
+      <v-row justify="end" class="mt-4 mr-8">
+        <v-col cols="auto"> Total: {{ currencyMask(0) }} </v-col>
+      </v-row>
       <v-row v-if="isConsulting" justify="end" class="mt-2 mr-2">
         <v-col cols="auto">
           <v-btn color="green white--text" @click="consultingFinished">
@@ -793,6 +795,7 @@
           </v-btn>
         </v-col>
       </v-row>
+
       <v-row justify="end" class="ml-2 mt-2 mb-2">
         <v-col cols="auto">
           <v-btn class="ml-8" text color="black" @click="leave">
@@ -1010,7 +1013,7 @@ export default Vue.extend({
         {
           text: "Descrição",
           value: "description",
-          width: "45%",
+          width: "63%",
         },
         {
           text: "Quantidade",
