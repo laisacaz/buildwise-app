@@ -784,8 +784,8 @@
         <template v-slot:no-data> Nenhum serviço adicionado </template>
       </v-data-table>
       <v-divider></v-divider>
-      <v-row justify="end" class="mt-4 mr-8">
-        <v-col cols="auto"> Total: {{ currencyMask(0) }} </v-col>
+      <v-row justify="end" class="mt-4 mr-6" no-gutters v-if="isConsulting">
+        <v-col cols="auto"> Total: {{ currencyMask(totalSale) }} </v-col>
       </v-row>
       <v-row v-if="isConsulting" justify="end" class="mt-2 mr-2">
         <v-col cols="auto">
@@ -867,6 +867,7 @@ export default Vue.extend({
       showPopupSearchServices: false,
       currencyMask,
       twoDecimalsMask,
+      totalSale: 0,
       isBtnSelected: false,
       hasConstruction: false,
       isEditing: false,
@@ -1168,6 +1169,7 @@ export default Vue.extend({
       }
       this.productsToBeInsertedInRegister = this.resultSale.products;
       this.servicesToBeInsertedInRegister = this.resultSale.services;
+      this.totalSale = this.fields.subtotal;
     },
     async getActivesClient() {
       await this.$axios
