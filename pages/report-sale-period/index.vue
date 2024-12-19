@@ -133,7 +133,7 @@ export default Vue.extend({
   },
   methods: {
     leave() {
-      this.$router.push("/");
+      this.$router.push("/menu");
     },
     async generatePdf() {
       const partesData = this.startDate.split("/");

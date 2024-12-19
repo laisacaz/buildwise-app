@@ -13,7 +13,7 @@
     >
     </pop-up-confirmation>
     <v-row class="mt-4">
-      <h1 class="ml-4">Pesquisa de vendas</h1>
+      <h2 class="ml-4">Pesquisa de vendas</h2>
     </v-row>
     <v-card class="mt-6 mb-6" outlined>
       <v-row class="ml-2 mt-2">
@@ -127,6 +127,9 @@
             {{ $moment(item.createdAt, true).format("DD/MM/YYYY") }}
           </span>
         </template>
+        <template #[`item.total`]="{ item }">{{
+          currencyMask(item.total)
+        }}</template>
         <template v-slot:no-data>
           <v-alert :value="true"> Nenhuma venda encontrada </v-alert>
         </template>
@@ -136,6 +139,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { currencyMask } from "~/utils/consts/const";
 import { ESaleSearchType, EStatusSale } from "~/utils/enumerators/enum";
 import {
   ISaleSearchParams,
@@ -151,6 +155,7 @@ export default Vue.extend({
       itemIdToDelete: 0,
       isLoading: false,
       showPdf: false,
+      currencyMask,
       thePDFFileBlobRoute: undefined as string | undefined,
       isDeleting: false,
       searchTypeItems: [

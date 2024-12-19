@@ -2,24 +2,11 @@
   <div>
     <v-row class="mt-4">
       <h2 class="ml-4">
-        {{ isEditing ? "Edição de produto" : "Cadastro de produto" }}
+        {{ isEditing ? "Edição de serviço" : "Cadastro de serviço" }}
       </h2>
     </v-row>
     <v-card style="max-width: 800px" class="mt-6 mb-6" outlined>
       <v-row class="ml-2 mt-2 mr-0">
-        <v-col cols="auto">
-          <v-text-field
-            v-model="fields.reference"
-            clearable
-            dense
-            :maxlength="20"
-            class="required"
-            label="Referência"
-            placeholder="Referência"
-            outlined
-          >
-          </v-text-field>
-        </v-col>
         <v-col cols="8" class="mr-0">
           <v-text-field
             v-model="fields.description"
@@ -37,48 +24,13 @@
 
       <v-row class="ml-2 mt-2">
         <v-col cols="auto">
-          <v-text-field
-            v-model="fields.barCode"
-            clearable
-            dense
-            :maxlength="13"
-            label="Código de barras"
-            placeholder="Código de barras"
-            outlined
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="auto">
-          <v-currency-field
-            v-model.number="fields.stockQuantity"
-            style="max-width: 126px"
-            dense
-            class="required"
-            type="number"
-            label="Quantidade"
-            outlined
-          >
-          </v-currency-field>
-        </v-col>
-        <v-col cols="auto">
-          <v-currency-field
-            v-model.number="fields.cost"
-            style="max-width: 126px"
-            dense
-            type="number"
-            label="Custo"
-            outlined
-          >
-          </v-currency-field>
-        </v-col>
-        <v-col cols="auto">
           <v-currency-field
             v-model.number="fields.price"
             style="max-width: 126px"
             dense
             class="required"
             type="number"
-            label="Preço"
+            label="Valor"
             outlined
           >
           </v-currency-field>
@@ -100,21 +52,17 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { IProduct } from "~/utils/interfaces/crudObjects";
+import { IServiceOrder } from "~/utils/interfaces/crudObjects";
 export default Vue.extend({
   data() {
     return {
-      productId: 0,
+      serviceId: 0,
       isEditing: false,
       mensagemAlerta: false,
       fields: {
         description: "",
-        reference: "",
-        barCode: "",
-        stockQuantity: 0,
         price: 0,
-        cost: 0,
-      } as IProduct,
+      } as IServiceOrder,
     };
   },
   created() {
@@ -125,16 +73,16 @@ export default Vue.extend({
       const id = parseInt(this.$route.params.id);
       if (!isNaN(id)) {
         this.getData(id);
-        this.productId = id;
+        this.serviceId = id;
       }
     },
     leave() {
-      this.$router.push("/product");
+      this.$router.push("/service-order");
     },
-    async getData(productId: number) {
+    async getData(serviceId: number) {
       this.isEditing = true;
       await this.$axios
-        .get<IProduct>("/product/" + productId, {
+        .get<IServiceOrder>("/service-order/" + serviceId, {
           headers: {
             "content-type": "application/json",
             accept: "application/json",
@@ -152,10 +100,10 @@ export default Vue.extend({
         this.edit(parseInt(this.$route.params.id));
       } else {
         await this.$axios
-          .post<number>("/product", this.fields)
+          .post<number>("/service-order", this.fields)
           .then(() => {
             this.$globalFunctions.successAlert(
-              "Produto salvo com sucesso",
+              "Serviço salvo com sucesso",
               5000
             );
             this.leave();
@@ -167,9 +115,9 @@ export default Vue.extend({
     },
     async edit(id: number) {
       await this.$axios
-        .put("/product/" + id, this.fields)
+        .put("/service-order/" + id, this.fields)
         .then(() => {
-          this.$globalFunctions.successAlert("Produto salvo com sucesso", 5000);
+          this.$globalFunctions.successAlert("Serviço salvo com sucesso", 5000);
           this.leave();
         })
         .catch((error) => {

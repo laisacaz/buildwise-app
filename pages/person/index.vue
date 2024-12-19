@@ -9,7 +9,7 @@
     </pop-up-confirmation>
 
     <v-row class="mt-4">
-      <h1 class="ml-4">Pesquisa de pessoas</h1>
+      <h2 class="ml-4">Pesquisa de pessoas</h2>
     </v-row>
 
     <v-card class="mt-6 mb-6" outlined>

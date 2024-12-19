@@ -9,12 +9,12 @@
     <v-form v-if="isReportOn">
       <v-dialog v-model="isReportOn" persistent max-width="600px">
         <v-card class="no-scroll" outlined elevation="3">
-          <v-card-title> Relatório de Ranking de produtos </v-card-title>
+          <v-card-title> Relatório de Ranking de serviços </v-card-title>
 
           <v-divider></v-divider>
 
           <v-card-subtitle class="mt-4" style="font-size: 18px"
-            >Gera relatório ordenado por produtos mais vendidos</v-card-subtitle
+            >Gera relatório ordenado por serviços mais vendidos</v-card-subtitle
           >
           <v-row class="ml-2 mr-2 mb-2" justify="end">
             <v-col cols="auto">
@@ -55,7 +55,7 @@ export default Vue.extend({
       const responseType = "blob";
 
       await this.$axios
-        .get<Blob>("/report/product-ranking", {
+        .get<Blob>("/report/service-ranking", {
           responseType: responseType,
         })
         .then((res) => {

@@ -5,6 +5,7 @@
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
+      style="background-color: #dee9f3"
       app
     >
       <v-list class="py-0 navigation-list">
@@ -105,9 +106,28 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+    <v-app-bar
+      :clipped-left="clipped"
+      fixed
+      app
+      style="background-color: #1b5289"
+    >
+      <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer" />
+      <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-col cols="auto" class="mr-n2">
+        <v-chip>
+          {{ "Laísa" }}
+        </v-chip>
+      </v-col>
+      <v-col cols="auto" class="mr-n6"
+        ><v-avatar size="70" rounded>
+          <v-icon size="30" color="white">mdi-account </v-icon>
+        </v-avatar>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn text @click="leave" class="white--text">Sair</v-btn>
+      </v-col>
       <!-- <v-spacer />
       <v-btn
         icon
@@ -139,10 +159,15 @@ export default {
         {
           icon: "mdi-apps",
           title: "Menu",
-          to: "/",
+          to: "/menu",
         },
         {
-          icon: "mdi-cart",
+          icon: "mdi-cash-register",
+          title: "Caixa",
+          to: "/pos-cashier",
+        },
+        {
+          icon: "mdi-plus-box-multiple",
           title: "Cadastros",
           children: [
             {
@@ -156,9 +181,9 @@ export default {
               to: "/product",
             },
             {
-              icon: "mdi-package-variant",
+              icon: "mdi-account-wrench",
               title: "Serviços",
-              to: "/service",
+              to: "/service-order",
             },
             {
               icon: "mdi-account-hard-hat-outline",
@@ -183,6 +208,11 @@ export default {
             },
             {
               icon: "mdi-file-chart",
+              title: "Ranking serviços",
+              to: "/report-service-ranking",
+            },
+            {
+              icon: "mdi-file-chart",
               title: "Vendas por período",
               to: "/report-sale-period",
             },
@@ -194,6 +224,11 @@ export default {
       rightDrawer: false,
       title: "BuildWise",
     };
+  },
+  methods: {
+    leave() {
+      this.$router.push("/");
+    },
   },
 };
 </script>

@@ -9,7 +9,7 @@
     </pop-up-confirmation>
 
     <v-row class="mt-4">
-      <h1 class="ml-4">Pesquisa de produtos</h1>
+      <h2 class="ml-4">Pesquisa de produtos</h2>
     </v-row>
 
     <v-card class="mt-6 mb-6" outlined>
@@ -76,6 +76,9 @@
             <span>{{ "Editar" }}</span>
           </v-tooltip>
         </template>
+        <template #[`item.price`]="{ item }">{{
+          currencyMask(item.price)
+        }}</template>
         <template #[`item.delete`]="{ item }">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
@@ -91,6 +94,9 @@
             <span>{{ "Deletar" }}</span>
           </v-tooltip>
         </template>
+        <template #[`item.stockQuantity`]="{ item }">
+          {{ twoDecimalsMask(item.stockQuantity) }}
+        </template>
         <template v-slot:no-data>
           <v-alert :value="true"> Nenhum produto encontrado </v-alert>
         </template>
@@ -100,6 +106,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import { currencyMask, twoDecimalsMask } from "~/utils/consts/const";
 import { EProductSearchType } from "~/utils/enumerators/enum";
 import {
   IProductSearchParams,
@@ -113,8 +120,10 @@ export default Vue.extend({
       isRegistering: false,
       isDeleting: false,
       itemIdToDelete: 0,
+      currencyMask,
       EProductSearchType,
       isLoading: false,
+      twoDecimalsMask,
       searchTypeItems: [
         {
           text: "Descrição",
