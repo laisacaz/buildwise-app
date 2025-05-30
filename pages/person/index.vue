@@ -9,7 +9,7 @@
     </pop-up-confirmation>
 
     <v-row class="mt-4" dense>
-      <h2 class="ml-4">Pesquisa de pessoas</h2>
+      <h3 class="ml-4">Pesquisa de pessoas</h3>
     </v-row>
     <v-row dense>
       <v-col cols="12">
@@ -131,17 +131,19 @@ export default Vue.extend({
     this.search();
   },
   methods: {
-    async search() {
-      if (this.filters.searchType == EPersonSearchType.Id) {
-        if (this.filters.search) {
-          this.filters.id = parseInt(this.filters.search!);
-        } else {
-          this.filters.search = "";
-          this.filters.id = 0;
-        }
+    parseSearchId() {
+      if (
+        this.filters.searchType === EPersonSearchType.Id &&
+        this.filters.search
+      ) {
+        const id = parseInt(this.filters.search);
+        this.filters.id = isNaN(id) ? 0 : id;
+        this.filters.search = this.filters.search || "";
       }
-
+    },
+    async search() {
       this.isLoading = true;
+      this.parseSearchId();
 
       await this.$axios
         .get<defaultSearchResponse<IPersonSearchResponse>>("/person/search", {
