@@ -17,6 +17,12 @@
     :mobile-breakpoint="mobileBreakpoint"
   >
     <slot name="default"> </slot>
+    <template #[`item.price`]="{ item }">{{
+      currencyMask(item.price)
+    }}</template>
+    <template #[`item.stockQuantity`]="{ item }">
+      {{ twoDecimalsMask(item.stockQuantity) }}
+    </template>
     <template #[`item.edit`]="{ item }">
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
@@ -32,6 +38,11 @@
         </template>
         <span>{{ "Editar" }}</span>
       </v-tooltip>
+    </template>
+    <template #[`item.createdAt`]="{ item }">
+      <span>
+        {{ $moment(item.createdAt, true).format("DD/MM/YYYY") }}
+      </span>
     </template>
     <template #[`item.delete`]="{ item }">
       <v-tooltip bottom>
@@ -56,6 +67,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { currencyMask, twoDecimalsMask } from "~/utils/consts/const";
 
 export default Vue.extend({
   model: {
@@ -288,7 +300,10 @@ export default Vue.extend({
     },
   },
   data() {
-    return {};
+    return {
+      currencyMask,
+      twoDecimalsMask,
+    };
   },
   computed: {},
   watch: {},
