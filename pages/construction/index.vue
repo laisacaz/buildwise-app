@@ -8,112 +8,69 @@
     >
     </pop-up-confirmation>
 
-    <v-row class="mt-4">
-      <h2 class="ml-4">Pesquisa de obras</h2>
+    <v-row class="mt-2">
+      <h3 class="ml-4">Pesquisa de obras</h3>
     </v-row>
-    <v-card class="mt-6 mb-6" outlined>
-      <v-row class="ml-2 mt-2">
-        <v-col cols="auto">
-          <v-select
-            style="max-width: 200px"
-            v-model="filters.searchType"
-            label="Pesquisar por"
-            :items="searchTypeItems"
-            outlined
-            dense
-            hide-details
-          ></v-select>
-        </v-col>
-        <v-col cols="4">
-          <v-text-field
-            v-model="filters.search"
-            clearable
-            dense
-            placeholder="Digite aqui"
-            outlined
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="auto">
-          <v-btn @click="search" style="height: 40px" color="primary">
-            <v-icon> mdi-magnify </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-select
-            style="max-width: 200px"
-            v-model="filters.status"
-            label="Status"
-            :items="statusItems"
-            outlined
-            dense
-            clearable
-            hide-details
-            @change="search"
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-btn class="ml-8" @click="newRegister" color="primary">
-            <v-icon color="black"> mdi-plus </v-icon>
-            Cadastrar
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row class="ml-2 mt-2 mb-2"> </v-row>
-    </v-card>
-    <div>
-      <v-data-table
-        :headers="headers"
-        :loading="isLoading"
-        :items="fields.data"
-      >
-        <template #[`item.edit`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="primary"
-                class="grid-icon"
-                v-bind="attrs"
-                v-on="on"
-                @click="editClick(item)"
+    <v-row>
+      <v-col cols="12">
+        <v-card outlined>
+          <v-row class="ml-2 mt-2">
+            <v-col cols="6" sm="4" md="3" lg="2" xl="2">
+              <v-select
+                v-model="filters.searchType"
+                label="Pesquisar por"
+                :items="searchTypeItems"
+                outlined
+                dense
+                hide-details
+              ></v-select>
+            </v-col>
+            <v-col cols="6" sm="5" md="4" lg="4" xl="7">
+              <v-text-field
+                v-model="filters.search"
+                clearable
+                dense
+                :maxlength="50"
+                placeholder="Digite aqui"
+                outlined
+                @input="search"
               >
-                {{
-                  item.status == EStatusConstruction.Open
-                    ? "mdi-pencil"
-                    : "mdi-magnify"
-                }}
-              </v-icon>
-            </template>
-            <span>{{
-              item.status == EStatusConstruction.Open ? "Editar" : "Consultar"
-            }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.delete`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="red"
-                v-bind="attrs"
-                v-on="on"
-                @click="deleteClick(item)"
-              >
-                {{ "mdi-delete" }}
-              </v-icon>
-            </template>
-            <span>{{ "Deletar" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.createdAt`]="{ item }">
-          <span>
-            {{ $moment(item.createdAt, true).format("DD/MM/YYYY") }}
-          </span>
-        </template>
-        <template v-slot:no-data>
-          <v-alert :value="true"> Nenhuma obra encontrada </v-alert>
-        </template>
-      </v-data-table>
-    </div>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6" sm="3" md="3" lg="3" xl="2">
+              <v-select
+                v-model="filters.status"
+                label="Status"
+                :items="statusItems"
+                outlined
+                dense
+                clearable
+                hide-details
+                @change="search"
+              ></v-select>
+            </v-col>
+            <v-col cols="6" sm="2" md="2" lg="3" xl="1">
+              <v-btn @click="newRegister" color="primary">
+                <v-icon color="white"> mdi-plus </v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row class="ml-2 mt-2 mb-2"> </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <v-col cols="12">
+        <generic-table
+          :headers="headers"
+          :loading="isLoading"
+          :items="fields.data"
+          @editClick="editClick"
+          @deleteClick="deleteClick"
+        >
+        </generic-table>
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script lang="ts">
@@ -205,15 +162,20 @@ export default Vue.extend({
     this.search();
   },
   methods: {
-    async search() {
-      if (this.filters.searchType == EConstructionSearchType.Id) {
-        if (this.filters.search) {
-          this.filters.id = parseInt(this.filters.search);
-        } else {
-          this.filters.search = "";
-          this.filters.id = 0;
-        }
+    parseSearchId() {
+      if (
+        this.filters.searchType === EConstructionSearchType.Id &&
+        this.filters.search
+      ) {
+        const id = parseInt(this.filters.search);
+        this.filters.id = isNaN(id) ? 0 : id;
+        this.filters.search = this.filters.search || "";
       }
+    },
+    async search() {
+      this.parseSearchId();
+      this.isLoading = true;
+
       await this.$axios
         .get<defaultSearchResponse<IConstructionSearchResponse>>(
           "/construction/search",
@@ -231,6 +193,9 @@ export default Vue.extend({
         })
         .catch((error) => {
           console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     editClick(item: any) {
