@@ -8,86 +8,47 @@
     >
     </pop-up-confirmation>
 
-    <v-row class="mt-4">
-      <h2 class="ml-4">Pesquisa de serviços</h2>
+    <v-row class="mt-2">
+      <h3 class="ml-4">Pesquisa de serviços</h3>
     </v-row>
 
-    <v-card class="mt-6 mb-6" outlined>
-      <v-row class="ml-2 mt-2">
-        <v-col cols="6">
-          <v-text-field
-            v-model="filters.search"
-            clearable
-            dense
-            :maxlength="50"
-            placeholder="Pesquisar pela descrição"
-            outlined
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="auto">
-          <v-btn
-            density="comfortable"
-            @click="searchService"
-            style="height: 40px"
-            color="primary"
-          >
-            <v-icon> mdi-magnify </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-btn class="ml-8" @click="newRegister" color="primary">
-            <v-icon color="black"> mdi-plus </v-icon>
-            Cadastrar
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card>
-    <div>
-      <v-data-table
-        :headers="headers"
-        :loading="isLoading"
-        :items="fields.data"
-      >
-        <template #[`item.edit`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="primary"
-                class="grid-icon ml-10"
-                v-bind="attrs"
-                v-on="on"
-                @click="editClick(item)"
+    <v-row>
+      <v-col cols="12">
+        <v-card outlined>
+          <v-row class="ml-2 mt-2">
+            <v-col cols="9" sm="10" md="10" lg="10" xl="11">
+              <v-text-field
+                v-model="filters.search"
+                clearable
+                dense
+                :maxlength="50"
+                placeholder="Pesquisar pela descrição"
+                outlined
+                @input="searchService"
               >
-                {{ "mdi-pencil" }}
-              </v-icon>
-            </template>
-            <span>{{ "Editar" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.delete`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="red"
-                v-bind="attrs"
-                v-on="on"
-                @click="deleteClick(item)"
-              >
-                {{ "mdi-delete" }}
-              </v-icon>
-            </template>
-            <span>{{ "Deletar" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.price`]="{ item }">{{
-          currencyMask(item.price)
-        }}</template>
-        <template v-slot:no-data>
-          <v-alert :value="true"> Nenhum serviço encontrado </v-alert>
-        </template>
-      </v-data-table>
-    </div>
+              </v-text-field>
+            </v-col>
+            <v-col cols="3" sm="2" md="2" lg="2" xl="1">
+              <v-btn @click="newRegister" color="primary">
+                <v-icon color="white"> mdi-plus </v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <v-col cols="12">
+        <generic-table
+          :headers="headers"
+          :loading="isLoading"
+          :items="fields.data"
+          @editClick="editClick"
+          @deleteClick="deleteClick"
+        >
+        </generic-table>
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script lang="ts">
@@ -165,10 +126,11 @@ export default Vue.extend({
         )
         .then((response) => {
           this.fields = response.data;
-          this.isLoading = false;
         })
         .catch((error) => {
           console.log(error);
+        })
+        .finally(() => {
           this.isLoading = false;
         });
     },
