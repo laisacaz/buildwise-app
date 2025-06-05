@@ -8,10 +8,10 @@
     >
     </pop-up-confirmation>
 
-    <v-row class="mt-4" dense>
+    <v-row class="mt-2">
       <h3 class="ml-4">Pesquisa de pessoas</h3>
     </v-row>
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <v-card outlined>
           <v-row class="ml-2 mt-2">
@@ -162,8 +162,10 @@ export default Vue.extend({
           this.fields = response.data;
         })
         .catch((error) => {
-          this.isLoading = false;
           console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     editClick(item: any) {

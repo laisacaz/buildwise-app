@@ -206,7 +206,7 @@ export default Vue.extend({
     },
     mobileBreakpoint: {
       type: [Number, String],
-      default: 600,
+      default: 650,
     },
     multiSort: {
       type: Boolean,
