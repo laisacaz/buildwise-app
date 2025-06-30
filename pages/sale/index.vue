@@ -65,76 +65,20 @@
         </v-col>
       </v-row>
     </v-card>
-    <div>
-      <v-data-table
-        :headers="headers"
-        :loading="isLoading"
-        :items="fields.data"
-      >
-        <template #[`item.edit`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="primary"
-                class="grid-icon"
-                v-bind="attrs"
-                v-on="on"
-                @click="editClick(item)"
-              >
-                {{
-                  item.status == EStatusSale.Open ? "mdi-pencil" : "mdi-magnify"
-                }}
-              </v-icon>
-            </template>
-            <span>{{
-              item.status == EStatusSale.Open ? "Editar" : "Consultar"
-            }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.printer`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                v-if="item.status === EStatusSale.Finalized"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="print(item.id)"
-              >
-                {{ "mdi-printer" }}
-              </v-icon>
-            </template>
-            <span>{{ "Imprimir" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.delete`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="red"
-                v-bind="attrs"
-                v-on="on"
-                @click="deleteClick(item)"
-              >
-                {{ "mdi-delete" }}
-              </v-icon>
-            </template>
-            <span>{{ "Deletar" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.createdAt`]="{ item }">
-          <span>
-            {{ $moment(item.createdAt, true).format("DD/MM/YYYY") }}
-          </span>
-        </template>
-        <template #[`item.total`]="{ item }">{{
-          currencyMask(item.total)
-        }}</template>
-        <template v-slot:no-data>
-          <v-alert :value="true"> Nenhuma venda encontrada </v-alert>
-        </template>
-      </v-data-table>
-    </div>
+    <v-row dense>
+      <v-col cols="12">
+        <generic-table
+          :headers="headers"
+          :loading="isLoading"
+          :items="fields.data"
+          movement-type="venda"
+          @editClick="editClick"
+          @printClick="print"
+          @deleteClick="deleteClick"
+        >
+        </generic-table>
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script lang="ts">
@@ -296,12 +240,12 @@ export default Vue.extend({
     newRegister() {
       this.$router.push("/sale/_id");
     },
-    async print(id: number) {
+    async print(item: any) {
       this.showPdf = true;
       const responseType = "blob";
 
       await this.$axios
-        .get<Blob>("/sale/report/" + id, {
+        .get<Blob>("/sale/report/" + item.id, {
           responseType: responseType,
         })
         .then((res) => {
