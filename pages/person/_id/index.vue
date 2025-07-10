@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-row class="mt-2">
-      <h2 class="ml-4">
+    <v-row class="mt-2" dense>
+      <h2 class="ml-1">
         {{ isEditing ? "Edição de pessoa" : "Cadastro de pessoa" }}
       </h2>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col cols="12">
         <generic-container title="Dados" outlined>
           <template #default>
@@ -64,7 +64,7 @@
         </generic-container>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row dense>
       <v-col cols="12">
         <generic-container title="Endereço" collapsible :start-open="false">
           <template #default>
@@ -165,8 +165,6 @@ export default Vue.extend({
   data() {
     return {
       isEditing: false,
-      isAddressOpen: false,
-      personId: 0,
       fields: {
         name: "",
         identityNumber: "",
@@ -189,18 +187,17 @@ export default Vue.extend({
   methods: {
     startPage() {
       const id = parseInt(this.$route.params.id);
-      if (!isNaN(id)) {
-        this.getData(id);
-        this.personId = id;
+      this.isEditing = this.checkIfIsEditing(id);
+      if (this.isEditing) {
+        this.getPersonById(id);
       }
     },
-    leave() {
-      this.$router.push("/person");
+    checkIfIsEditing(id: number): boolean {
+      return !isNaN(id);
     },
-    async getData(personId: number) {
-      this.isEditing = true;
+    async getPersonById(id: number) {
       await this.$axios
-        .get<IPerson>("/person/" + personId, {
+        .get<IPerson>("/person/" + id, {
           headers: {
             "content-type": "application/json",
             accept: "application/json",
@@ -215,22 +212,9 @@ export default Vue.extend({
     },
     async save() {
       if (this.isEditing) {
-        if (this.isEditing) {
-          this.edit(parseInt(this.$route.params.id));
-        }
+        this.edit(parseInt(this.$route.params.id));
       } else {
-        await this.$axios
-          .post<number>("/person", this.fields)
-          .then((response) => {
-            this.$globalFunctions.successAlert(
-              "Pessoa salva com sucesso",
-              5000
-            );
-            this.leave();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        this.insert();
       }
     },
     async edit(id: number) {
@@ -243,6 +227,20 @@ export default Vue.extend({
         .catch((error) => {
           console.log(error);
         });
+    },
+    async insert() {
+      await this.$axios
+        .post<number>("/person", this.fields)
+        .then(() => {
+          this.$globalFunctions.successAlert("Pessoa salva com sucesso", 5000);
+          this.leave();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    leave() {
+      this.$router.push("/person");
     },
   },
 });
