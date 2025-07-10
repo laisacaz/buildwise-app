@@ -182,15 +182,19 @@ export default Vue.extend({
     this.search();
   },
   methods: {
-    async search() {
-      if (this.filters.searchType == ESaleSearchType.Id) {
-        if (this.filters.search) {
-          this.filters.id = parseInt(this.filters.search);
-        } else {
-          this.filters.search = "";
-          this.filters.id = 0;
-        }
+    parseSearchId() {
+      if (
+        this.filters.searchType == ESaleSearchType.Id &&
+        this.filters.search
+      ) {
+        const id = parseInt(this.filters.search);
+        this.filters.id = isNaN(id) ? 0 : id;
+        this.filters.search = this.filters.search || "";
       }
+    },
+    async search() {
+      this.parseSearchId();
+      this.isLoading = true;
 
       await this.$axios
         .get<defaultSearchResponse<ISaleSearchResponse>>("/sale/search", {
@@ -206,6 +210,9 @@ export default Vue.extend({
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     clickClearSearch() {
@@ -257,8 +264,3 @@ export default Vue.extend({
   },
 });
 </script>
-<style>
-.table.v-table thead th {
-  font-size: 20px !important;
-}
-</style>
