@@ -101,15 +101,7 @@ import { currencyMask, twoDecimalsMask } from "~/utils/consts/const";
 import { EStatusSale } from "~/utils/enumerators/enum";
 
 export default Vue.extend({
-  model: {
-    prop: "model",
-    event: "input",
-  },
   props: {
-    model: {
-      type: Boolean,
-      required: true,
-    },
     calculateWidths: {
       type: Boolean,
       required: false,
