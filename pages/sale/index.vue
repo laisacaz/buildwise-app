@@ -12,129 +12,72 @@
       @confirmClick="deleteSale"
     >
     </pop-up-confirmation>
+
     <v-row class="mt-4">
-      <h2 class="ml-4">Pesquisa de vendas</h2>
+      <h3 class="ml-4">Pesquisa de vendas</h3>
     </v-row>
-    <v-card class="mt-6 mb-6" outlined>
-      <v-row class="ml-2 mt-2">
-        <v-col cols="auto">
-          <v-select
-            style="max-width: 200px"
-            v-model="filters.searchType"
-            label="Pesquisar por"
-            :items="searchTypeItems"
-            outlined
-            dense
-            hide-details
-          ></v-select>
-        </v-col>
-        <v-col cols="4">
-          <v-text-field
-            v-model="filters.search"
-            clearable
-            dense
-            placeholder="Digite aqui"
-            outlined
-            @click:clear="clickClearSearch"
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="auto">
-          <v-btn @click="search" style="height: 40px" color="primary">
-            <v-icon> mdi-magnify </v-icon>
-          </v-btn>
-        </v-col>
-        <v-col>
-          <v-select
-            style="max-width: 200px"
-            v-model="filters.status"
-            label="Status"
-            :items="statusItems"
-            outlined
-            dense
-            clearable
-            hide-details
-            @change="search"
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-btn class="ml-8" @click="newRegister" color="primary">
-            <v-icon color="black"> mdi-plus </v-icon>
-            Cadastrar
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card>
-    <div>
-      <v-data-table
-        :headers="headers"
-        :loading="isLoading"
-        :items="fields.data"
-      >
-        <template #[`item.edit`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="primary"
-                class="grid-icon"
-                v-bind="attrs"
-                v-on="on"
-                @click="editClick(item)"
+
+    <v-row>
+      <v-col cols="12">
+        <v-card outlined>
+          <v-row class="ml-2 mt-2">
+            <v-col cols="12" sm="4" md="3" lg="2" xl="2">
+              <v-select
+                v-model="filters.searchType"
+                label="Pesquisar por"
+                :items="searchTypeItems"
+                outlined
+                dense
+                hide-details
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="8" md="4" lg="6" xl="7">
+              <v-text-field
+                v-model="filters.search"
+                clearable
+                dense
+                placeholder="Digite aqui"
+                outlined
+                @click:clear="clickClearSearch"
+                @input="search"
               >
-                {{
-                  item.status == EStatusSale.Open ? "mdi-pencil" : "mdi-magnify"
-                }}
-              </v-icon>
-            </template>
-            <span>{{
-              item.status == EStatusSale.Open ? "Editar" : "Consultar"
-            }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.printer`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                v-if="item.status === EStatusSale.Finalized"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="print(item.id)"
-              >
-                {{ "mdi-printer" }}
-              </v-icon>
-            </template>
-            <span>{{ "Imprimir" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.delete`]="{ item }">
-          <v-tooltip bottom>
-            <template #activator="{ on, attrs }">
-              <v-icon
-                color="red"
-                v-bind="attrs"
-                v-on="on"
-                @click="deleteClick(item)"
-              >
-                {{ "mdi-delete" }}
-              </v-icon>
-            </template>
-            <span>{{ "Deletar" }}</span>
-          </v-tooltip>
-        </template>
-        <template #[`item.createdAt`]="{ item }">
-          <span>
-            {{ $moment(item.createdAt, true).format("DD/MM/YYYY") }}
-          </span>
-        </template>
-        <template #[`item.total`]="{ item }">{{
-          currencyMask(item.total)
-        }}</template>
-        <template v-slot:no-data>
-          <v-alert :value="true"> Nenhuma venda encontrada </v-alert>
-        </template>
-      </v-data-table>
-    </div>
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="4" md="3" lg="2" xl="2">
+              <v-select
+                v-model="filters.status"
+                label="Status"
+                :items="statusItems"
+                outlined
+                dense
+                clearable
+                hide-details
+                @change="search"
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="3" md="2" lg="2" xl="1">
+              <v-btn @click="newRegister" color="primary">
+                <v-icon color="white"> mdi-plus </v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row dense>
+      <v-col cols="12">
+        <generic-table
+          :headers="headers"
+          :loading="isLoading"
+          :items="fields.data"
+          movement-type="venda"
+          @editClick="editClick"
+          @printClick="print"
+          @deleteClick="deleteClick"
+        >
+        </generic-table>
+      </v-col>
+    </v-row>
   </div>
 </template>
 <script lang="ts">
@@ -239,15 +182,19 @@ export default Vue.extend({
     this.search();
   },
   methods: {
-    async search() {
-      if (this.filters.searchType == ESaleSearchType.Id) {
-        if (this.filters.search) {
-          this.filters.id = parseInt(this.filters.search);
-        } else {
-          this.filters.search = "";
-          this.filters.id = 0;
-        }
+    parseSearchId() {
+      if (
+        this.filters.searchType == ESaleSearchType.Id &&
+        this.filters.search
+      ) {
+        const id = parseInt(this.filters.search);
+        this.filters.id = isNaN(id) ? 0 : id;
+        this.filters.search = this.filters.search || "";
       }
+    },
+    async search() {
+      this.parseSearchId();
+      this.isLoading = true;
 
       await this.$axios
         .get<defaultSearchResponse<ISaleSearchResponse>>("/sale/search", {
@@ -263,6 +210,9 @@ export default Vue.extend({
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     clickClearSearch() {
@@ -296,12 +246,12 @@ export default Vue.extend({
     newRegister() {
       this.$router.push("/sale/_id");
     },
-    async print(id: number) {
+    async print(item: any) {
       this.showPdf = true;
       const responseType = "blob";
 
       await this.$axios
-        .get<Blob>("/sale/report/" + id, {
+        .get<Blob>("/sale/report/" + item.id, {
           responseType: responseType,
         })
         .then((res) => {
@@ -314,8 +264,3 @@ export default Vue.extend({
   },
 });
 </script>
-<style>
-.table.v-table thead th {
-  font-size: 20px !important;
-}
-</style>

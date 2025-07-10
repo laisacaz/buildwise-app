@@ -20,6 +20,9 @@
     <template #[`item.price`]="{ item }">{{
       currencyMask(item.price)
     }}</template>
+    <template #[`item.total`]="{ item }">{{
+      currencyMask(item.total)
+    }}</template>
     <template #[`item.stockQuantity`]="{ item }">
       {{ twoDecimalsMask(item.stockQuantity) }}
     </template>
@@ -33,10 +36,37 @@
             v-on="on"
             @click="editClick(item)"
           >
-            {{ "mdi-pencil" }}
+            {{
+              movementType === "venda" && item.status === EStatusSale.Finalized
+                ? "mdi-magnify"
+                : "mdi-pencil"
+            }}
           </v-icon>
         </template>
-        <span>{{ "Editar" }}</span>
+        <span>{{
+          movementType === "venda" && item.status === EStatusSale.Finalized
+            ? "Consultar "
+            : "Editar"
+        }}</span>
+      </v-tooltip>
+    </template>
+    <template #[`item.printer`]="{ item }">
+      <v-tooltip
+        bottom
+        v-if="movementType === 'venda' && item.status === EStatusSale.Finalized"
+      >
+        <template #activator="{ on, attrs }">
+          <v-icon
+            color="primary"
+            class="grid-icon"
+            v-bind="attrs"
+            v-on="on"
+            @click="printClick(item)"
+          >
+            {{ "mdi-printer" }}
+          </v-icon>
+        </template>
+        <span>{{ "Imprimir" }}</span>
       </v-tooltip>
     </template>
     <template #[`item.createdAt`]="{ item }">
@@ -68,6 +98,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { currencyMask, twoDecimalsMask } from "~/utils/consts/const";
+import { EStatusSale } from "~/utils/enumerators/enum";
 
 export default Vue.extend({
   model: {
@@ -90,6 +121,11 @@ export default Vue.extend({
       default: undefined,
     },
     checkboxColor: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
+    movementType: {
       type: String,
       required: false,
       default: undefined,
@@ -301,6 +337,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      EStatusSale,
       currencyMask,
       twoDecimalsMask,
     };
@@ -316,6 +353,9 @@ export default Vue.extend({
     },
     deleteClick(item: any) {
       this.$emit("deleteClick", item);
+    },
+    printClick(item: any) {
+      this.$emit("printClick", item);
     },
   },
 });
